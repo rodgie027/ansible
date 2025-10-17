@@ -4,10 +4,21 @@
   become: true
   tasks:
   
-  - name: install apache package and php support
+  - name: install apache package and php support on Debian
     package:
       name:
-        - "{{ apache_package }}"
-        - "{{ php_package }}"
+        - apache2
+        - libapache2-mod-php
       state: latest
       update_cache: yes
+    when: ansible_distribution == "Debian"
+
+  - name: install apache package and php support for Fedora
+#   dnf: 
+#     name:
+#       - httpd
+#       - php
+#     state: latest
+#     update_cache: yes
+    raw: dnf install -y http php
+    when: ansible_distribution == "Fedora" 
